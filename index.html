@@ -20,7 +20,6 @@
             }
             #container-details {
                 padding: 10px;
-                border: 1px solid #CCC;
                 margin-left: 20px;
             }
             #container-details .row {
@@ -29,6 +28,11 @@
             #title-line {
                 border-bottom: 1px solid #CCC;
                 margin-bottom: 30px;
+            }
+            #contact-details-inner {
+                margin-bottom: 2px;
+                border: 1px solid #CCC;
+                padding-bottom: 10px;
             }
         </style>
     </head>
@@ -87,21 +91,27 @@
                         </div>             
                     </form>
                 </div>
-                <div class="col-3" id="container-details">
-                    <div class="row">
-                        <div class="col-12">
-                            <b>Fulano de tal</b>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            fulano@email.com, 12u234894327
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Editar</button>
-                            <button type="submit" class="btn btn-danger">Deletar</button>
+                <div class="col-3">
+                    <div class="row" id="container-details" v-for="contact in contacts">
+                        <div class="row" id="contact-details-inner">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <b>{{contact.name}}</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{contact.email}}, {{contact.contact}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary">Editar</button>
+                                        <button type="submit" class="btn btn-danger" @click.prevent="removeContact(contact.id)">Deletar</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -113,7 +123,9 @@
                 "el":   "#container-general",
                 "data": {
                     "name": "Contatos app",
+                    "contacts": [],
                     "contact": {
+                        "id": "",
                         "name":    "André de Paula Terceiro",
                         "email":   "andre.terceiro@sisloc.com.br",
                         "contact": "+55 11 98289-9112"
@@ -121,6 +133,8 @@
                 },
                 "methods": {
                     saveContact(contact) {
+                        contact.id = new Date().getTime();
+
                         let contacts = localStorage.getItem('contactsApp');
                         if (contacts) {
                             contacts = JSON.parse(contacts);
@@ -128,8 +142,27 @@
                         } else {
                             contacts = [contact];
                         }
+                        this.contacts.push(contact);
                         localStorage.setItem('contactsApp', JSON.stringify(contacts))
-                    }
+                    },
+                    removeContact(id) {
+                        let contacts = localStorage.getItem('contactsApp');
+                        if (contacts) {
+                            contacts = JSON.parse(contacts);
+                            
+                            for (let i in contacts) {
+                                console.log(contacts[i].id);
+                                if (contacts[i].id == id) {
+                                    contacts.splice(i, 1);
+                                }
+                            }
+                            localStorage.setItem('contactsApp', JSON.stringify(contacts));
+                            this.contacts = contacts;
+                        }
+                    } 
+                },
+                created() {
+                   this.contacts = JSON.parse(localStorage.getItem('contactsApp'));
                 }
             });
         </script>
