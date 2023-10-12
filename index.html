@@ -46,7 +46,8 @@
         <div class="container" id="container-general">
             <div class="row" id="title-line">
                 <div class="col-10">
-                    <h2>{{name}}</h2>
+                    <h2 :title="appTitle">{{name}}</h2>
+                    <!-- Mesma coisa com um 'v-bind': <h2 v-bind:title="appTitle">{{name}}</h2> -->
                 </div>
                 <div class="col-2" id="contacts-count-container">
                     {{contactsCount}}
@@ -143,7 +144,8 @@
                         "name":    "",
                         "email":   "",
                         "contact": ""
-                    }
+                    },
+                    "appTitle": "Meu app de contatos"
                 },
                 "computed": {
                     contactsCount() {
