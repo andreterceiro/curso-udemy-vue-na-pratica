@@ -85,7 +85,8 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12 form-line">
-                                    <button type="submit" class="btn btn-success" v-on:click.prevent="saveContact(contact)">Criar contato</button>
+                                    <button type="submit" v-if="!isEdit" class="btn btn-success" v-on:click.prevent="saveContact(contact)">Criar contato</button>
+                                    <button type="submit" v-if="isEdit" class="btn btn-primary" v-on:click.prevent="updateContact(contact)">Atualizar contato</button>
                                 </div>
                             </div>
                         </div>             
@@ -122,6 +123,7 @@
             let app = new Vue({
                 "el":   "#container-general",
                 "data": {
+                    "isEdit": false,
                     "name": "Contatos app",
                     "contacts": [],
                     "contact": {
@@ -144,6 +146,7 @@
                         }
                         this.contacts.push(JSON.parse(JSON.stringify(contact)));
                         localStorage.setItem('contactsApp', JSON.stringify(contacts));
+                        location.reload();
                     },
                     removeContact(id) {
                         let contacts = localStorage.getItem('contactsApp');
@@ -151,21 +154,28 @@
                             contacts = JSON.parse(contacts);
                             
                             for (let i in contacts) {
-                                console.log(contacts[i].id);
                                 if (contacts[i].id == id) {
                                     contacts.splice(i, 1);
                                 }
                             }
                             localStorage.setItem('contactsApp', JSON.stringify(contacts));
                             this.contacts = contacts;
+                            location.reload();
                         }
                     },
                     editContact(contact) {
                         this.contact = contact;
+                        this.isEdit = true;
                     },
                     updateContact(contact) {
-
-                    } 
+                        for (let i in this.contacts) {
+                            if (this.contacts[i].id == contact.id) {
+                                this.contacts[i] = contact;
+                            }
+                        }
+                        localStorage.setItem('contactsApp', JSON.stringify(this.contacts));
+                        location.reload();
+                    }
                 },
                 created() {
                    this.contacts = JSON.parse(localStorage.getItem('contactsApp'));
