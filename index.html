@@ -107,7 +107,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary">Editar</button>
+                                        <button type="submit" class="btn btn-primary" @click.prevent="editContact(contact)">Editar</button>
                                         <button type="submit" class="btn btn-danger" @click.prevent="removeContact(contact.id)">Deletar</button>
                                     </div>
                                 </div>
@@ -126,9 +126,9 @@
                     "contacts": [],
                     "contact": {
                         "id": "",
-                        "name":    "André de Paula Terceiro",
-                        "email":   "andre.terceiro@sisloc.com.br",
-                        "contact": "+55 11 98289-9112"
+                        "name":    "",
+                        "email":   "",
+                        "contact": ""
                     }
                 },
                 "methods": {
@@ -159,6 +159,12 @@
                             localStorage.setItem('contactsApp', JSON.stringify(contacts));
                             this.contacts = contacts;
                         }
+                    },
+                    editContact(contact) {
+                        this.contact = contact;
+                    },
+                    updateContact(contact) {
+
                     } 
                 },
                 created() {
