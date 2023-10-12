@@ -142,8 +142,8 @@
                         } else {
                             contacts = [contact];
                         }
-                        this.contacts.push(contact);
-                        localStorage.setItem('contactsApp', JSON.stringify(contacts))
+                        this.contacts.push(JSON.parse(JSON.stringify(contact)));
+                        localStorage.setItem('contactsApp', JSON.stringify(contacts));
                     },
                     removeContact(id) {
                         let contacts = localStorage.getItem('contactsApp');
