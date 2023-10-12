@@ -34,13 +34,22 @@
                 border: 1px solid #CCC;
                 padding-bottom: 10px;
             }
+            #contacts-count-container {
+                text-align: right;
+            }
+            #no-contacts {
+                padding: 20px;
+            }
         </style>
     </head>
     <body>
         <div class="container" id="container-general">
             <div class="row" id="title-line">
-                <div class="col-12">
+                <div class="col-10">
                     <h2>{{name}}</h2>
+                </div>
+                <div class="col-2" id="contacts-count-container">
+                    {{contactsCount}}
                 </div>
             </div>
             <div class="row">
@@ -92,7 +101,7 @@
                         </div>             
                     </form>
                 </div>
-                <div class="col-3">
+                <div class="col-3" v-if="this.contacts.length">
                     <div class="row" id="container-details" v-for="contact in contacts">
                         <div class="row" id="contact-details-inner">
                             <div class="col-12">
@@ -116,6 +125,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-3" v-else id="no-contacts">
+                    Nenhum contato encontrado
+                </div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
@@ -131,6 +143,11 @@
                         "name":    "",
                         "email":   "",
                         "contact": ""
+                    }
+                },
+                "computed": {
+                    contactsCount() {
+                        return `O total de contatos é ${this.contacts.length}`;
                     }
                 },
                 "methods": {
